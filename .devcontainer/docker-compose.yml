@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   app:
     build:
@@ -8,7 +8,9 @@ services:
     working_dir: /home/dev1/src
     user: dev1
     volumes:
-      - ../:/home/dev1/src
+      - type: bind
+        source: '../'
+        target: '/home/dev1/src'
     ports:
       - 3000:3000
     tty: true
