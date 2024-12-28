@@ -1,0 +1,19 @@
+{
+    "name": "vdom_study",
+    "dockerComposeFile": "./docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/home/dev1/src",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "ms-ceintl.vscode-language-pack-ja",
+                "mhutchie.git-graph",
+                "gruntfuggly.todo-tree",
+                "oderwat.indent-rainbow",
+                "emeraldwalk.RunOnSave"
+            ]
+        }
+    }
+}

@@ -1,0 +1,14 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    container_name: dev_env
+    working_dir: /home/dev1/src
+    user: dev1
+    volumes:
+      - ../:/home/dev1/src
+    ports:
+      - 3000:3000
+    tty: true
