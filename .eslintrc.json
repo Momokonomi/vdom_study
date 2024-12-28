@@ -6,7 +6,6 @@
   "rules": {
     "no-unused-vars": ["error"], // 未使用の変数をエラーとして検出
     "eqeqeq": ["error", "always"], // 厳密な等価演算子を強制
-    "no-console": ["warn"], // console.log の使用を警告
     "quotes": ["error", "single"], // シングルクォートを強制
     "semi": ["error", "always"], // セミコロンを必須に
     "no-var": ["error"], // var の使用を禁止
