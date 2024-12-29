@@ -16,6 +16,6 @@ window.addEventListener('load', () => {
     const changedDom = vdomOperator.currentDom;
     changedDom.detected.children[1].innerHTML = element.target.value;
     vdomOperator.setChangedVDom(changedDom);
-    console.log(changedDom.detected.children[1]);
+    vdomOperator.apply();
   });
 });

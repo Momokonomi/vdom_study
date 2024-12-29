@@ -93,18 +93,40 @@ export default class VdomOperator {
   apply() {
     this.#render(this.#changedDom);
     this.#currentDom = this.#changedDom;
+    console.log('change!');
   }
   /**
    * レンダーする
    */
-  #render(domJson) {
-    this.#rootElement.append(...DomBuilder.parse(domJson));
+  #render() {
+    if (this.currentDom === undefined) {
+      this.#rootElement.append(...DomBuilder.parse(this.changedDom));
+      return;
+    }
+    const curP = document.getElementById('inputText');
+    const nextP = DomBuilder.domUnit(this.changedDom.detected.children[1]);
+
+    curP.replaceWith(nextP);
   }
   /**
    * 変更前と変更後の変化を確認する
    */
   diff() {
-    return;
+    //どこを変更したか受け取るのが速いが確実ではない
+    //今回は単純化でpタグのみ確認する
+    if (this.currentDom === undefined) {
+      return true;
+    }
+    const curretEl = this.currentDom.detected.children[1];
+    const changedEl = this.changedDom.detected.children[1];
+    if (curretEl.tag !== changedEl.tag) {
+      return true;
+    }
+    if (curretEl.innerHTML !== changedEl.innerHTML) {
+      return true;
+    }
+
+    return false;
   }
   /**
    * 変更後のVDOMの情報を受け取る
