@@ -100,7 +100,12 @@ export default class VdomOperator {
   #render(domJson) {
     this.#rootElement.append(...DomBuilder.parse(domJson));
   }
-
+  /**
+   * 変更前と変更後の変化を確認する
+   */
+  diff() {
+    return;
+  }
   /**
    * 変更後のVDOMの情報を受け取る
    */

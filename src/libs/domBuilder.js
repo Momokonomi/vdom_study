@@ -8,7 +8,7 @@ export default class DomBuilder {
   static parse(domJson) {
     const parsedDom = [];
     for (const root of Object.values(domJson)) {
-      parsedDom.push(DomBuilder.#parentNodeTree(root));
+      parsedDom.push(DomBuilder.parentNodeTree(root));
     }
     return parsedDom;
   }
@@ -16,16 +16,16 @@ export default class DomBuilder {
    * 子をもつ親のDom Elementsを作成する\
    * 深さ優先探索
    */
-  static #parentNodeTree(parent) {
+  static parentNodeTree(parent) {
     if (!parent) return undefined;
 
-    const parentDom = DomBuilder.#domUnit(parent);
+    const parentDom = DomBuilder.domUnit(parent);
     if (!parent.children) {
       return parentDom;
     }
 
     for (const child of parent.children) {
-      parentDom.appendChild(DomBuilder.#parentNodeTree(child));
+      parentDom.appendChild(DomBuilder.parentNodeTree(child));
     }
 
     return parentDom;
@@ -35,7 +35,7 @@ export default class DomBuilder {
    * @param {{tag: string,innerHTML:string,href:{keys:string}}} domJson
    * @returns
    */
-  static #domUnit(domJson) {
+  static domUnit(domJson) {
     const dom = document.createElement(String(domJson.tag));
     dom.innerHTML = domJson.innerHTML ?? '';
     //属性追加
