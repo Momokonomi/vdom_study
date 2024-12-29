@@ -42,6 +42,38 @@ window.addEventListener('load', () => {
         },
       ],
     },
+    detected: {
+      tag: 'div',
+      innerHTML: undefined,
+      href: {
+        id: undefined,
+        className: undefined,
+        type: undefined,
+        name: undefined,
+      },
+      children: [
+        {
+          tag: 'h2',
+          innerHTML: '変更後(入力を検知)',
+          href: {
+            id: undefined,
+            className: undefined,
+            type: undefined,
+            name: undefined,
+          },
+        },
+        {
+          tag: 'p',
+          innerHTML: '',
+          href: {
+            id: 'inputText',
+            className: undefined,
+            type: undefined,
+            name: undefined,
+          },
+        },
+      ],
+    },
   };
 
   const dom = parse(currentDom);
