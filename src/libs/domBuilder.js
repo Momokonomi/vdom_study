@@ -3,20 +3,10 @@
  */
 export default class DomBuilder {
   /**
-   * JSON形式のDOM情報からDOM構造を作成する
-   */
-  static parse(domJson) {
-    const parsedDom = [];
-    for (const root of Object.values(domJson)) {
-      parsedDom.push(DomBuilder.parentNodeTree(root));
-    }
-    return parsedDom;
-  }
-  /**
    * 子をもつ親のDom Elementsを作成する\
    * 深さ優先探索
    */
-  static parentNodeTree(parent) {
+  static parse(parent) {
     if (!parent) return undefined;
 
     const parentDom = DomBuilder.domUnit(parent);
@@ -25,7 +15,7 @@ export default class DomBuilder {
     }
 
     for (const child of parent.children) {
-      parentDom.appendChild(DomBuilder.parentNodeTree(child));
+      parentDom.appendChild(DomBuilder.parse(child));
     }
 
     return parentDom;

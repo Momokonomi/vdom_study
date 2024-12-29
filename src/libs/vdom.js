@@ -91,43 +91,64 @@ export default class VdomOperator {
    * 画面にこれまでの変更を適応し、VDOMの値を更新する
    */
   apply() {
-    this.#render(this.#changedDom);
+    const diffArray = this.#diff();
+    this.#render(diffArray);
     this.#currentDom = this.#changedDom;
     console.log('change!');
   }
-  /**
-   * レンダーする
-   */
-  #render() {
-    if (this.currentDom === undefined) {
-      this.#rootElement.append(...DomBuilder.parse(this.changedDom));
-      return;
-    }
-    const curP = document.getElementById('inputText');
-    const nextP = DomBuilder.domUnit(this.changedDom.detected.children[1]);
 
-    curP.replaceWith(nextP);
+  /**
+   * 画面に差分を反映する
+   * @param {[id: number | undefined, domJson: {tag:string,innerHTML: string | undefined, href:{},children: [] | undefined}[] | undefined][]} diffArray
+   * @returns
+   */
+  #render(diffArray) {
+    const removeAll = () => {
+      this.#rootElement.replaceChildren();
+    };
+    /**
+     *
+     * @param {{tag:string,innerHTML: string | undefined, href:{},children: [] | undefined}[] domJson
+     */
+    const parse = (domJsons) => {
+      return domJsons.map((json) => {
+        return DomBuilder.parse(json);
+      });
+    };
+    for (const [targetId, afterDomJson] of diffArray) {
+      if (targetId === undefined && afterDomJson === undefined) {
+        removeAll();
+        continue;
+      }
+      if (targetId === undefined) {
+        removeAll();
+        const afterDom = parse(afterDomJson);
+        this.#rootElement.append(...afterDom);
+        continue;
+      }
+      if (afterDomJson === undefined) {
+        document.getElementById(targetId).remove();
+        continue;
+      }
+      const afterDom = parse(afterDomJson);
+      const targetDom = document.getElementById(targetId);
+      targetDom.replaceWith(...afterDom);
+    }
   }
   /**
-   * 変更前と変更後の変化を確認する
+   * 変更前と要素のidと変更後の要素のJSONの配列を返す
    */
-  diff() {
-    //変更対象のidと変更後の要素を配列に格納し、配列を返す。
-    //JSONからグラフ形式にする？
-    //ハッシュ値を内部のIDで持たせたい
+  #diff() {
+    //変更対象のidと変更後の要素を格納した配列を返す。
+    /**[[変更対象ID(undefinedは全体置き換え), 変更後DOMのJSON(undefinedは削除)[]],...,[]]*/
+    const diffArray = [];
     if (this.currentDom === undefined) {
-      return true;
+      diffArray.push([
+        undefined,
+        [this.changedDom.root, this.changedDom.detected],
+      ]);
+      return diffArray;
     }
-    const curretEl = this.currentDom.detected.children[1];
-    const changedEl = this.changedDom.detected.children[1];
-    if (curretEl.tag !== changedEl.tag) {
-      return true;
-    }
-    if (curretEl.innerHTML !== changedEl.innerHTML) {
-      return true;
-    }
-
-    return false;
   }
   /**
    * 変更後のVDOMの情報を受け取る
