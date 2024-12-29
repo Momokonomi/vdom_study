@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm run build; ts-node ./src/serve.ts",
-    "build": "npx tsc"
+    "start": "npx live-server"
   },
   "dependencies": {
-    "serve": "^14.2.4"
+    "live-server": "^1.2.2"
   },
   "devDependencies": {
     "@types/node": "^20",
