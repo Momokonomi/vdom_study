@@ -10,7 +10,7 @@ export default class VdomOperator {
       tag: 'main',
       innerHTML: undefined,
       href: {
-        id: undefined,
+        id: 'main',
         className: undefined,
         type: undefined,
         name: undefined,
@@ -20,7 +20,7 @@ export default class VdomOperator {
           tag: 'h1',
           innerHTML: '仮想DOMを自作',
           href: {
-            id: undefined,
+            id: 'title',
             className: undefined,
             type: undefined,
             name: undefined,
@@ -43,7 +43,7 @@ export default class VdomOperator {
       tag: 'div',
       innerHTML: undefined,
       href: {
-        id: undefined,
+        id: 'next-section',
         className: undefined,
         type: undefined,
         name: undefined,
@@ -53,7 +53,7 @@ export default class VdomOperator {
           tag: 'h2',
           innerHTML: '変更後(入力を検知)',
           href: {
-            id: undefined,
+            id: 'changed-title',
             className: undefined,
             type: undefined,
             name: undefined,
@@ -112,8 +112,9 @@ export default class VdomOperator {
    * 変更前と変更後の変化を確認する
    */
   diff() {
-    //どこを変更したか受け取るのが速いが確実ではない
-    //今回は単純化でpタグのみ確認する
+    //変更対象のidと変更後の要素を配列に格納し、配列を返す。
+    //JSONからグラフ形式にする？
+    //ハッシュ値を内部のIDで持たせたい
     if (this.currentDom === undefined) {
       return true;
     }

@@ -45,7 +45,6 @@ export default class DomBuilder {
       }
       dom.setAttribute(href, domJson.href[href]);
     }
-
     return dom;
   }
 }
