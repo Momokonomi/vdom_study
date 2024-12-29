@@ -6,10 +6,14 @@
  * ・差があればその部分をレンダーする
  */
 window.addEventListener('load', () => {
-  const body = document.getElementsByTagName('body');
+  const body = document.getElementsByTagName('body')[0];
+  const init = {
+    tag: 'p',
+    innerText: 'test',
+  };
 
-  const p = document.createElement('p');
-  p.innerHTML = 'test';
-  p.textContent = 'test';
-  body[0].appendChild(p);
+  const p = document.createElement(init.tag);
+  p.innerText = init.innerText;
+  p.innerHTML = init.innerText;
+  body.appendChild(p);
 });
