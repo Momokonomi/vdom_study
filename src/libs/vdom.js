@@ -72,7 +72,7 @@ export default class VdomOperator {
       ],
     },
   };
-  /**現在表示しているDOMのJSON */
+  /**現在表示しているDOMのJSON*/
   #currentDom;
   /**操作しているDOM */
   #changedDom;
@@ -93,13 +93,13 @@ export default class VdomOperator {
   apply() {
     const diffArray = this.#diff();
     this.#render(diffArray);
-    this.#currentDom = this.#changedDom;
+    this.#currentDom = structuredClone(this.#changedDom);
     console.log('change!');
   }
 
   /**
    * 画面に差分を反映する
-   * @param {[id: number | undefined, domJson: {tag:string,innerHTML: string | undefined, href:{},children: [] | undefined}[] | undefined][]} diffArray
+   * @param {[id: string | undefined, domJson: {tag:string,innerHTML: string | undefined, href:{},children: [] | undefined}[] | undefined][]} diffArray
    * @returns
    */
   #render(diffArray) {
@@ -140,15 +140,20 @@ export default class VdomOperator {
    */
   #diff() {
     //変更対象のidと変更後の要素を格納した配列を返す。
-    /**[[変更対象ID(undefinedは全体置き換え), 変更後DOMのJSON(undefinedは削除)[]],...,[]]*/
+    /**[[変更対象ID(undefined：全体置き換え), 変更後DOMのJSON(undefined：削除)[]],...,[]]*/
     const diffArray = [];
     if (this.currentDom === undefined) {
-      diffArray.push([
-        undefined,
-        [this.changedDom.root, this.changedDom.detected],
-      ]);
+      diffArray.push([undefined, Object.values(this.changedDom)]);
       return diffArray;
     }
+
+    const oldP = this.currentDom.detected.children[1];
+    const newP = this.changedDom.detected.children[1];
+    if (oldP.innerHTML !== newP.innerHTML) {
+      diffArray.push([oldP.href.id, [newP]]);
+    }
+
+    return diffArray;
   }
   /**
    * 変更後のVDOMの情報を受け取る
@@ -159,15 +164,17 @@ export default class VdomOperator {
 
   /**
    * 現在レンダされているVDOMの情報を返す
+   * @returns {{[key: string]: {tag:string,innerHTML: string | undefined, href:{},children: []}}}
    */
   get currentDom() {
-    return this.#currentDom;
+    return structuredClone(this.#currentDom);
   }
 
   /**
    * 現在保持しているレンダ前の変更後のVDOMの情報を返す
+   * @returns {{[key: string]: {tag:string,innerHTML: string | undefined, href:{},children: []}}}
    */
   get changedDom() {
-    return this.#changedDom;
+    return structuredClone(this.#changedDom);
   }
 }
